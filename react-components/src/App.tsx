@@ -4,6 +4,7 @@ import './App.scss';
 import Header from './Header/Header';
 import Home from './Home/Home';
 import About from './About/About';
+import FormPage from './FormPage/FormPage';
 import { Routes } from 'react-router';
 import NotFound from './NotFound/NotFound';
 
@@ -18,6 +19,7 @@ class App extends React.Component {
               <Route path="/" element={<Navigate to={'/home'} />} />
               <Route path="/home" element={<Home />} />
               <Route path="/about" element={<About />} />
+              <Route path="/form" element={<FormPage />} />
               <Route path="*" element={<NotFound />} />
             </Routes>
           </div>

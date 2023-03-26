@@ -1,8 +1,8 @@
 import React from 'react';
-import { FormCards } from '../Form/Form';
+import { FormCard } from '../Form/Form';
 import './CardInForm.scss';
 
-class CardInForm extends React.Component<FormCards> {
+class CardInForm extends React.Component<FormCard> {
   render() {
     return (
       <div className="card-form">

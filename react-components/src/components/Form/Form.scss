@@ -9,6 +9,7 @@
   width: 500px;
   margin: 0 auto;
   margin-bottom: 60px;
+  position: relative;
 
   &-title {
     margin-left: 40px;
@@ -69,6 +70,7 @@
     grid-template-columns: repeat(auto-fill, 250px);
     gap: 20px;
     justify-content: center;
+    padding-bottom: 40px;
   }
 
 }
@@ -228,6 +230,19 @@ input[type='checkbox'] {
 }
 
 .error {
-  border: 2px solid #FF0033;
-  border-radius: 5px;
+  display: block;
+  color: #FF0033;
+  font-size: 12px;
+  text-align: center;
+  margin-top: 3px;
+}
+
+.required {
+  color: #FF0033;
+}
+
+.save-message {
+  position: absolute;
+  top: -35px;
+  left: calc(50% - 92px);
 }

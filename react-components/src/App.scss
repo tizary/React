@@ -4,8 +4,12 @@
 
 .app-wrapper {
   margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
 }
 
 .main-content {
   background-color: #f9fbff;
+  flex-grow: 1;
 }

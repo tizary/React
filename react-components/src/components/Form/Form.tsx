@@ -16,6 +16,8 @@ interface ErrorState {
   nameErr: boolean;
   dateErr: boolean;
   personalDataErr: boolean;
+  promoErr: boolean;
+  urlErr: boolean;
 }
 
 interface FormState {
@@ -38,7 +40,14 @@ class Form extends React.Component<object, FormState> {
     super(props);
     this.state = {
       components: [],
-      errors: { titleErr: false, nameErr: false, dateErr: false, personalDataErr: false },
+      errors: {
+        titleErr: false,
+        nameErr: false,
+        dateErr: false,
+        personalDataErr: false,
+        promoErr: false,
+        urlErr: false,
+      },
       validation: false,
     };
     this.url = '';
@@ -69,36 +78,64 @@ class Form extends React.Component<object, FormState> {
     const personalData = this.checkbox.current?.checked;
     const promo = this.switch.current?.checked || false;
 
-    const calendar = date.split('-');
-    const calendarYear = +calendar[0];
-    const calendarMonth = +calendar[1] - 1;
-    const calendarDay = +calendar[2];
-
-    const dateNow = new Date();
-    const day = dateNow.getDate();
-    const month = dateNow.getMonth();
-    const year = dateNow.getFullYear();
-
-    if (!title || title.length < 3) {
+    if (!title || title.length < 3 || title[0] !== title[0].toUpperCase()) {
       this.setState((state) => ({
         errors: { ...state.errors, titleErr: true },
       }));
-    } else if (!name || title.length < 3) {
+    } else if (!name || name.length < 3 || name[0] !== name[0].toUpperCase()) {
       this.setState({
-        errors: { titleErr: false, nameErr: true, dateErr: false, personalDataErr: false },
+        errors: {
+          titleErr: false,
+          nameErr: true,
+          dateErr: false,
+          personalDataErr: false,
+          promoErr: false,
+          urlErr: false,
+        },
       });
-    } else if (
-      !date ||
-      calendarYear < year ||
-      (calendarYear <= year && calendarMonth < month) ||
-      (calendarYear <= year && calendarMonth <= month && calendarDay <= day)
-    ) {
+    } else if (!date) {
       this.setState({
-        errors: { titleErr: false, nameErr: false, dateErr: true, personalDataErr: false },
+        errors: {
+          titleErr: false,
+          nameErr: false,
+          dateErr: true,
+          personalDataErr: false,
+          promoErr: false,
+          urlErr: false,
+        },
       });
     } else if (!personalData) {
       this.setState({
-        errors: { titleErr: false, nameErr: false, dateErr: false, personalDataErr: true },
+        errors: {
+          titleErr: false,
+          nameErr: false,
+          dateErr: false,
+          personalDataErr: true,
+          promoErr: false,
+          urlErr: false,
+        },
+      });
+    } else if (!promo) {
+      this.setState({
+        errors: {
+          titleErr: false,
+          nameErr: false,
+          dateErr: false,
+          personalDataErr: false,
+          promoErr: true,
+          urlErr: false,
+        },
+      });
+    } else if (!this.url) {
+      this.setState({
+        errors: {
+          titleErr: false,
+          nameErr: false,
+          dateErr: false,
+          personalDataErr: false,
+          promoErr: false,
+          urlErr: true,
+        },
       });
     } else {
       this.setState(
@@ -106,7 +143,14 @@ class Form extends React.Component<object, FormState> {
           components: state.components.concat([
             { title, name, date, country, url: this.url, personalData, promo },
           ]),
-          errors: { titleErr: false, nameErr: false, dateErr: false, personalDataErr: false },
+          errors: {
+            titleErr: false,
+            nameErr: false,
+            dateErr: false,
+            personalDataErr: false,
+            promoErr: false,
+            urlErr: false,
+          },
           validation: true,
         }),
         () => {
@@ -122,6 +166,14 @@ class Form extends React.Component<object, FormState> {
       this.url = URL.createObjectURL(event.target.files[0]);
     }
   };
+
+  createDate() {
+    const date = new Date();
+    if (date.getMonth() < 9) {
+      return `${date.getFullYear()}-0${date.getMonth() + 1}-${date.getDate()}`;
+    }
+    return `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`;
+  }
 
   render() {
     const elements = this.state.components.map((item, index) => {
@@ -156,7 +208,7 @@ class Form extends React.Component<object, FormState> {
           </label>
           <label>
             Date of delivery<span className="required">*</span>:
-            <input className="form-date" type="date" ref={this.date} min={Date.now()} />
+            <input className="form-date" type="date" ref={this.date} min={this.createDate()} />
             {this.state.errors.dateErr && <span className="error">Enter a future date</span>}
           </label>
           <label>
@@ -175,8 +227,9 @@ class Form extends React.Component<object, FormState> {
           </label>
           <label className="form-label">
             <input className="switch form-switch" type="checkbox" ref={this.switch} /> I want to
-            receive notifications about promo, sales, etc.
+            receive notifications about promo, sales, etc.<span className="required">*</span>
           </label>
+          {this.state.errors.promoErr && <span className="error">Сheck this switch</span>}
           <label className="file-label">
             <span className="file-upload">Upload image</span>
             <input
@@ -185,6 +238,7 @@ class Form extends React.Component<object, FormState> {
               onChange={this.handleClick}
               accept="image/*,.png,.jpg,.gif,.web"
             />
+            {this.state.errors.urlErr && <span className="error">Load image</span>}
           </label>
           <input className="form-btn" type="submit" value="Submit" />
         </form>

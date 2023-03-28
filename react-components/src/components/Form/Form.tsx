@@ -16,6 +16,7 @@ interface ErrorState {
   nameErr: boolean;
   dateErr: boolean;
   personalDataErr: boolean;
+  selectErr: boolean;
   promoErr: boolean;
   urlErr: boolean;
 }
@@ -45,6 +46,7 @@ class Form extends React.Component<object, FormState> {
         nameErr: false,
         dateErr: false,
         personalDataErr: false,
+        selectErr: false,
         promoErr: false,
         urlErr: false,
       },
@@ -89,6 +91,7 @@ class Form extends React.Component<object, FormState> {
           nameErr: true,
           dateErr: false,
           personalDataErr: false,
+          selectErr: false,
           promoErr: false,
           urlErr: false,
         },
@@ -100,6 +103,19 @@ class Form extends React.Component<object, FormState> {
           nameErr: false,
           dateErr: true,
           personalDataErr: false,
+          selectErr: false,
+          promoErr: false,
+          urlErr: false,
+        },
+      });
+    } else if (!country) {
+      this.setState({
+        errors: {
+          titleErr: false,
+          nameErr: false,
+          dateErr: false,
+          personalDataErr: false,
+          selectErr: true,
           promoErr: false,
           urlErr: false,
         },
@@ -111,6 +127,7 @@ class Form extends React.Component<object, FormState> {
           nameErr: false,
           dateErr: false,
           personalDataErr: true,
+          selectErr: false,
           promoErr: false,
           urlErr: false,
         },
@@ -122,6 +139,7 @@ class Form extends React.Component<object, FormState> {
           nameErr: false,
           dateErr: false,
           personalDataErr: false,
+          selectErr: false,
           promoErr: true,
           urlErr: false,
         },
@@ -133,6 +151,7 @@ class Form extends React.Component<object, FormState> {
           nameErr: false,
           dateErr: false,
           personalDataErr: false,
+          selectErr: false,
           promoErr: false,
           urlErr: true,
         },
@@ -148,6 +167,7 @@ class Form extends React.Component<object, FormState> {
             nameErr: false,
             dateErr: false,
             personalDataErr: false,
+            selectErr: false,
             promoErr: false,
             urlErr: false,
           },
@@ -214,11 +234,13 @@ class Form extends React.Component<object, FormState> {
           <label>
             Country<span className="required">*</span>:
             <select className="form-select" ref={this.select}>
+              <option value=""></option>
               <option value="Belarus">Belarus</option>
               <option value="Poland">Poland</option>
               <option value="Ukraine">Ukraine</option>
               <option value="Latvia">Latvia</option>
             </select>
+            {this.state.errors.selectErr && <span className="error">Choose country</span>}
           </label>
           <label className="form-label">
             <input className="form-checkbox" type="checkbox" ref={this.checkbox} /> I consent to my

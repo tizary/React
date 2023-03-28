@@ -218,13 +218,17 @@ class Form extends React.Component<object, FormState> {
             Title<span className="required">*</span>:
             <input className="form-title input-text" type="text" ref={this.title} />
             {this.state.errors.titleErr && (
-              <span className="error">Enter the correct product name</span>
+              <span className="error">
+                Enter the correct product name (capitalized, more than 3 characters)
+              </span>
             )}
           </label>
           <label>
             Name<span className="required">*</span>:
             <input className="form-name input-text" type="text" ref={this.name} />
-            {this.state.errors.nameErr && <span className="error">Enter full name</span>}
+            {this.state.errors.nameErr && (
+              <span className="error">Enter full name (capitalized, more than 3 characters)</span>
+            )}
           </label>
           <label>
             Date of delivery<span className="required">*</span>:

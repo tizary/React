@@ -1,0 +1,38 @@
+.search {
+  position: relative;
+  display: flex;
+  align-items: center;
+
+  &-input {
+    width: 300px;
+    height: 40px;
+    outline: none;
+    padding: 5px;
+    padding-left: 40px;
+    border-radius: 5px;
+    font-size: 21px;
+  }
+
+  &-ico {
+    position: absolute;
+    left: 5px;
+  }
+
+  &-btn {
+    width: 90px;
+    height: 40px;
+    margin-left: 20px;
+    text-transform: uppercase;
+    background-color: #0957A8;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    transition: .5s;
+
+    &:hover {
+      cursor: pointer;
+      opacity: .8;
+    }
+  }
+
+}

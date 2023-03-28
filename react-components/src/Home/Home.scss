@@ -1,0 +1,15 @@
+.page-wrapper {
+  padding: 50px;
+}
+
+.page-title {
+  color: #0957A8;
+  margin-bottom: 20px;
+}
+
+.cards-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, 250px);
+  gap: 20px;
+  justify-content: center;
+}

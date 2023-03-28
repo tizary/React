@@ -35,7 +35,7 @@ class Form extends React.Component<object, FormState> {
   checkbox = React.createRef<HTMLInputElement>();
   switch = React.createRef<HTMLInputElement>();
   url: string;
-  timeout: number;
+  timeout: ReturnType<typeof setTimeout> | undefined;
   constructor(props: object) {
     super(props);
     this.state = {
@@ -51,7 +51,7 @@ class Form extends React.Component<object, FormState> {
       validation: false,
     };
     this.url = '';
-    this.timeout = 0;
+    this.timeout;
 
     this.handleSubmit = this.handleSubmit.bind(this);
   }
@@ -192,7 +192,7 @@ class Form extends React.Component<object, FormState> {
     });
     return (
       <div className="form-page">
-        <form className="form" ref={this.form} onSubmit={this.handleSubmit}>
+        <form className="form" name="form-page" ref={this.form} onSubmit={this.handleSubmit}>
           {this.state.validation && <p className="save-message">✅ SAVE INFORMATION</p>}
           <label>
             Title<span className="required">*</span>:

@@ -43,7 +43,7 @@ class Search extends React.Component<SearchProps, SearchState> {
 
   render() {
     return (
-      <form className="search" onSubmit={this.handleSubmit}>
+      <form action="#" name="form" className="search" onSubmit={this.handleSubmit}>
         <input
           type="text"
           value={this.state.value}

@@ -1,64 +1,36 @@
-import React from 'react';
+import React, { ChangeEvent, FormEvent, useEffect, useState } from 'react';
 import './Search.scss';
 import img from '../../assets/search.png';
 
-interface SearchState {
-  value: string;
-}
+export const Search = function Search() {
+  const [inputValue, setValue] = useState('' || localStorage.getItem('inputValue'));
 
-interface SearchProps {
-  search: string;
-}
+  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+  };
 
-class Search extends React.Component<SearchProps, SearchState> {
-  constructor(props: SearchProps) {
-    super(props);
-    this.state = { value: localStorage.getItem('inputValue') || '' };
+  useEffect(() => {
+    localStorage.setItem('inputValue', inputValue || '');
+  });
 
-    this.handleChange = this.handleChange.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
-    this.saveToLocalStorage = this.saveToLocalStorage.bind(this);
-  }
+  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+    setValue(e.target.value);
+  };
 
-  componentDidMount() {
-    window.addEventListener('beforeunload', this.saveToLocalStorage);
-  }
-
-  componentWillUnmount() {
-    this.saveToLocalStorage();
-    window.removeEventListener('beforeunload', this.saveToLocalStorage);
-  }
-
-  handleChange(event: React.ChangeEvent<HTMLInputElement>) {
-    this.setState({ value: event.target.value });
-  }
-
-  handleSubmit(event: React.FormEvent<HTMLFormElement>) {
-    event.preventDefault();
-  }
-
-  saveToLocalStorage() {
-    localStorage.setItem('inputValue', this.state.value);
-  }
-
-  render() {
-    return (
-      <form action="#" name="form" className="search" onSubmit={this.handleSubmit}>
-        <input
-          type="text"
-          value={this.state.value}
-          onChange={this.handleChange}
-          name="search"
-          className="search-input"
-          placeholder="Search"
-        />
-        <img className="search-ico" src={img} alt="ico" />
-        <button type="submit" className="search-btn">
-          search
-        </button>
-      </form>
-    );
-  }
-}
-
-export default Search;
+  return (
+    <form action="#" name="form" className="search" onSubmit={handleSubmit}>
+      <input
+        type="text"
+        value={inputValue}
+        onChange={handleChange}
+        name="search"
+        className="search-input"
+        placeholder="Search"
+      />
+      <img className="search-ico" src={img} alt="ico" />
+      <button type="submit" className="search-btn">
+        search
+      </button>
+    </form>
+  );
+};

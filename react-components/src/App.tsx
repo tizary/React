@@ -8,25 +8,21 @@ import FormPage from './FormPage/FormPage';
 import { Routes } from 'react-router';
 import NotFound from './NotFound/NotFound';
 
-class App extends React.Component {
-  render() {
-    return (
-      <BrowserRouter>
-        <div className="app-wrapper">
-          <Header />
-          <div className="main-content">
-            <Routes>
-              <Route path="/" element={<Navigate to={'/home'} />} />
-              <Route path="/home" element={<Home />} />
-              <Route path="/about" element={<About />} />
-              <Route path="/form" element={<FormPage />} />
-              <Route path="*" element={<NotFound />} />
-            </Routes>
-          </div>
+export const App = function App() {
+  return (
+    <BrowserRouter>
+      <div className="app-wrapper">
+        <Header />
+        <div className="main-content">
+          <Routes>
+            <Route path="/" element={<Navigate to={'/home'} />} />
+            <Route path="/home" element={<Home />} />
+            <Route path="/about" element={<About />} />
+            <Route path="/form" element={<FormPage />} />
+            <Route path="*" element={<NotFound />} />
+          </Routes>
         </div>
-      </BrowserRouter>
-    );
-  }
-}
-
-export default App;
+      </div>
+    </BrowserRouter>
+  );
+};

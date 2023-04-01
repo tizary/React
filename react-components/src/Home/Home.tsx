@@ -1,6 +1,6 @@
 import React from 'react';
 import './Home.scss';
-import Search from '../components/Search/Search';
+import { Search } from '../components/Search/Search';
 import Card from '../components/Card/Card';
 import cardsInfo from './cards.json';
 
@@ -19,7 +19,7 @@ class Home extends React.Component {
     return (
       <div className="page-wrapper">
         <h2 className="page-title">Home</h2>
-        <Search search={''} />
+        <Search />
         <div className="cards-list">{cardElements}</div>
       </div>
     );

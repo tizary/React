@@ -1,7 +1,7 @@
 import { describe, test, expect } from 'vitest';
 import { render, screen } from '@testing-library/react';
 import '@testing-library/jest-dom';
-import Form from '../src/components/Form/Form';
+import { Form } from '../src/components/Form/Form';
 import React from 'react';
 
 describe('<Form />', () => {

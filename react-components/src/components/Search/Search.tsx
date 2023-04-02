@@ -1,9 +1,9 @@
-import React, { ChangeEvent, FormEvent, useEffect, useState } from 'react';
+import { ChangeEvent, FormEvent, useEffect, useState } from 'react';
 import './Search.scss';
 import img from '../../assets/search.png';
 
 export const Search = function Search() {
-  const [inputValue, setValue] = useState('' || localStorage.getItem('inputValue'));
+  const [inputValue, setValue] = useState(localStorage.getItem('inputValue') || '');
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();

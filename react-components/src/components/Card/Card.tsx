@@ -1,4 +1,3 @@
-import React from 'react';
 import './Card.scss';
 
 type MyProps = {
@@ -9,22 +8,18 @@ type MyProps = {
   price: string;
 };
 
-class Card extends React.Component<MyProps> {
-  render() {
-    return (
-      <div className="card">
-        <div className="card-wrapper">
-          <img className="card-img" src={this.props.image} alt="card-img" />
-          <h3 className="card-title">{this.props.title}</h3>
-          <div className="card-description">
-            <p className="card-description-text">{this.props.description}</p>
-            <span className="card-description-date">{this.props.date}</span>
-            <span className="card-description-price">${this.props.price}</span>
-          </div>
+export const Card = function Card(props: MyProps) {
+  return (
+    <div className="card">
+      <div className="card-wrapper">
+        <img className="card-img" src={props.image} alt="card-img" />
+        <h3 className="card-title">{props.title}</h3>
+        <div className="card-description">
+          <p className="card-description-text">{props.description}</p>
+          <span className="card-description-date">{props.date}</span>
+          <span className="card-description-price">${props.price}</span>
         </div>
       </div>
-    );
-  }
-}
-
-export default Card;
+    </div>
+  );
+};

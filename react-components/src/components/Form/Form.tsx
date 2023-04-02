@@ -1,5 +1,5 @@
 import React, { FormEvent, useEffect, useState } from 'react';
-import CardInForm from '../CardInForm/CardInForm';
+import { CardInForm } from '../CardInForm/CardInForm';
 import './Form.scss';
 
 export interface FormCard {
@@ -38,9 +38,12 @@ export const Form = function Form() {
   const [validation, setValidation] = useState(false);
 
   useEffect(() => {
-    setTimeout(() => {
+    const timeout = setTimeout(() => {
       setValidation(false);
     }, 2000);
+    return () => {
+      clearTimeout(timeout);
+    };
   });
 
   const addErr = (errorName: string) => {
@@ -128,24 +131,14 @@ export const Form = function Form() {
     }
   };
 
-  const inputTitleHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setData((prevData) => ({
-      ...prevData,
-      title: event.target.value,
-    }));
-  };
+  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const target = event.target;
+    const value = target.type === 'checkbox' ? target.checked : target.value;
+    const name = target.name;
 
-  const inputNameHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
     setData((prevData) => ({
       ...prevData,
-      name: event.target.value,
-    }));
-  };
-
-  const inputDateHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setData((prevData) => ({
-      ...prevData,
-      date: event.target.value,
+      [name]: value,
     }));
   };
 
@@ -156,26 +149,15 @@ export const Form = function Form() {
     }));
   };
 
-  const checkboxHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setData((prevData) => ({
-      ...prevData,
-      personalData: event.target.checked,
-    }));
-  };
-
-  const switchHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setData((prevData) => ({
-      ...prevData,
-      promo: event.target.checked,
-    }));
-  };
-
   const fileHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
-    if (event.target.files) {
-      setData((prevData) => ({
-        ...prevData,
-        url: URL.createObjectURL(event.target.files[0]),
-      }));
+    if (event.target.files?.length) {
+      const file = event.target.files[0];
+      if (file) {
+        setData((prevData) => ({
+          ...prevData,
+          url: URL.createObjectURL(file),
+        }));
+      }
     }
   };
 
@@ -215,8 +197,9 @@ export const Form = function Form() {
           <input
             className="form-title input-text"
             value={data.title}
-            onChange={inputTitleHandler}
+            onChange={handleInputChange}
             type="text"
+            name="title"
           />
           {error.titleErr === true && (
             <span className="error">
@@ -229,8 +212,9 @@ export const Form = function Form() {
           <input
             className="form-name input-text"
             value={data.name}
-            onChange={inputNameHandler}
+            onChange={handleInputChange}
             type="text"
+            name="name"
           />
           {error.nameErr && (
             <span className="error">Enter full name (capitalized, more than 3 characters)</span>
@@ -241,15 +225,21 @@ export const Form = function Form() {
           <input
             className="form-date"
             value={data.date}
-            onChange={inputDateHandler}
+            onChange={handleInputChange}
             type="date"
+            name="date"
             min={`${createDate()}`}
           />
           {error.dateErr && <span className="error">Enter a future date</span>}
         </label>
         <label>
           Country<span className="required">*</span>:
-          <select value={data.country} onChange={selectCountryHandler} className="form-select">
+          <select
+            value={data.country}
+            onChange={selectCountryHandler}
+            className="form-select"
+            name="country"
+          >
             <option value=""></option>
             <option value="Belarus">Belarus</option>
             <option value="Poland">Poland</option>
@@ -262,8 +252,9 @@ export const Form = function Form() {
           <input
             className="form-checkbox"
             checked={data.personalData}
-            onChange={checkboxHandler}
+            onChange={handleInputChange}
             type="checkbox"
+            name="personalData"
           />{' '}
           I consent to my personal data
           <span className="required">*</span>
@@ -273,8 +264,9 @@ export const Form = function Form() {
           <input
             className="switch form-switch"
             checked={data.promo}
-            onChange={switchHandler}
+            onChange={handleInputChange}
             type="checkbox"
+            name="promo"
           />{' '}
           I want to receive notifications about promo, sales, etc.
           <span className="required">*</span>

@@ -1,12 +1,11 @@
-import React from 'react';
 import { BrowserRouter, Navigate, Route } from 'react-router-dom';
 import './App.scss';
-import Header from './Header/Header';
-import Home from './Home/Home';
-import About from './About/About';
-import FormPage from './FormPage/FormPage';
+import { Header } from './Header/Header';
+import { Home } from './Home/Home';
+import { About } from './About/About';
+import { FormPage } from './FormPage/FormPage';
 import { Routes } from 'react-router';
-import NotFound from './NotFound/NotFound';
+import { NotFound } from './NotFound/NotFound';
 
 export const App = function App() {
   return (

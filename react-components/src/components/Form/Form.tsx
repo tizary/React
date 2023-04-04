@@ -79,7 +79,7 @@ export const Form = function Form() {
             className="form-title input-text"
             type="text"
             {...register('title', {
-              required: 'Enter full name (capitalized, more than 3 characters)',
+              required: 'Enter full name (more than 3 characters)',
               minLength: {
                 value: 3,
                 message: 'Enter the correct product name (more than 3 characters)',
@@ -94,7 +94,7 @@ export const Form = function Form() {
             className="form-name input-text"
             type="text"
             {...register('name', {
-              required: 'Enter full name (capitalized, more than 3 characters)',
+              required: 'Enter full name (more than 3 characters)',
               minLength: {
                 value: 3,
                 message: 'Enter the correct product name (more than 3 characters)',

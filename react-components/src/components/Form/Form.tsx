@@ -69,7 +69,6 @@ export const Form = function Form() {
       />
     );
   });
-  console.log(errors);
   return (
     <div className="form-page">
       <form className="form" name="form-page" onSubmit={handleSubmit(onSubmit)}>
@@ -84,7 +83,6 @@ export const Form = function Form() {
                 value: true,
                 message: 'Enter the correct product name (more than 3 characters)',
               },
-              minLength: 3,
             })}
           />
           {errors.title && <span className="error">{errors.title.message}</span>}
@@ -96,7 +94,6 @@ export const Form = function Form() {
             type="text"
             {...register('name', {
               required: 'Enter full name (capitalized, more than 3 characters)',
-              minLength: 3,
             })}
           />
           {errors.name && <span className="error">{errors.name.message}</span>}

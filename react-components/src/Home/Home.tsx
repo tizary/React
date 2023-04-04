@@ -1,4 +1,3 @@
-import React from 'react';
 import './Home.scss';
 import { Search } from '../components/Search/Search';
 import { Card } from '../components/Card/Card';

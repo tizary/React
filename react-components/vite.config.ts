@@ -10,8 +10,8 @@ export default defineConfig({
     coverage: {
       provider: 'c8',
       all: true,
-      reporter: "text",
-      lines: 50
-    }
+      reporter: 'text',
+      lines: 50,
+    },
   },
 });

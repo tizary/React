@@ -79,8 +79,9 @@ export const Form = function Form() {
             className="form-title input-text"
             type="text"
             {...register('title', {
-              required: {
-                value: true,
+              required: 'Enter full name (capitalized, more than 3 characters)',
+              minLength: {
+                value: 3,
                 message: 'Enter the correct product name (more than 3 characters)',
               },
             })}
@@ -94,6 +95,10 @@ export const Form = function Form() {
             type="text"
             {...register('name', {
               required: 'Enter full name (capitalized, more than 3 characters)',
+              minLength: {
+                value: 3,
+                message: 'Enter the correct product name (more than 3 characters)',
+              },
             })}
           />
           {errors.name && <span className="error">{errors.name.message}</span>}
@@ -144,7 +149,6 @@ export const Form = function Form() {
           <input
             className="hidden"
             type="file"
-            // onChange={fileHandler}
             accept="image/*,.png,.jpg,.gif,.web"
             {...register('url', { required: 'Load image' })}
           />

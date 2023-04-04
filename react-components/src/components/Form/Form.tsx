@@ -1,4 +1,5 @@
 import React, { FormEvent, useEffect, useState } from 'react';
+import { useForm } from 'react-hook-form';
 import { CardInForm } from '../CardInForm/CardInForm';
 import './Form.scss';
 import { createDate } from '../../utils/createDate';
@@ -14,29 +15,36 @@ export interface FormCard {
 }
 
 export const Form = function Form() {
-  const [data, setData] = useState({
-    title: '',
-    name: '',
-    date: '',
-    country: '',
-    url: '',
-    personalData: false,
-    promo: false,
-  });
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    reset,
+  } = useForm<FormCard>();
 
   const [components, setComponents] = useState<FormCard[]>([]);
 
-  const [error, setError] = useState({
-    titleErr: false,
-    nameErr: false,
-    dateErr: false,
-    personalDataErr: false,
-    selectErr: false,
-    promoErr: false,
-    urlErr: false,
-  });
-
   const [validation, setValidation] = useState(false);
+
+  const onSubmit = (value: FormCard) => {
+    const file = value.url[0];
+    const blob = new Blob([file], { type: 'img/png' });
+
+    setComponents((prevData) => [
+      ...prevData,
+      {
+        title: value.title,
+        name: value.name,
+        date: value.date,
+        country: value.country,
+        url: URL.createObjectURL(blob),
+        personalData: value.personalData,
+        promo: value.promo,
+      },
+    ]);
+    setValidation(true);
+    reset();
+  };
 
   useEffect(() => {
     const timeout = setTimeout(() => {
@@ -46,121 +54,6 @@ export const Form = function Form() {
       clearTimeout(timeout);
     };
   });
-
-  const addErr = (errorName: string) => {
-    setError((prevErr) => ({
-      ...prevErr,
-      [`${errorName}`]: true,
-    }));
-  };
-
-  const removeErr = (errorName: string) => {
-    setError((prevErr) => ({
-      ...prevErr,
-      [`${errorName}`]: false,
-    }));
-  };
-
-  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    if (!data.title || data.title.length < 3 || data.title[0] !== data.title[0].toUpperCase()) {
-      addErr('titleErr');
-    } else {
-      removeErr('titleErr');
-    }
-    if (!data.name || data.name.length < 3 || data.name[0] !== data.name[0].toUpperCase()) {
-      addErr('nameErr');
-    } else {
-      removeErr('nameErr');
-    }
-    if (!data.date) {
-      addErr('dateErr');
-    } else {
-      removeErr('dateErr');
-    }
-
-    if (!data.country) {
-      addErr('selectErr');
-    } else {
-      removeErr('selectErr');
-    }
-
-    if (!data.personalData) {
-      addErr('personalDataErr');
-    } else {
-      removeErr('personalDataErr');
-    }
-
-    if (!data.promo) {
-      addErr('promoErr');
-    } else {
-      removeErr('promoErr');
-    }
-
-    if (!data.url) {
-      addErr('urlErr');
-    } else {
-      removeErr('urlErr');
-    }
-
-    if (
-      data.title &&
-      data.title.length >= 3 &&
-      data.title[0] === data.title[0].toUpperCase() &&
-      data.name &&
-      data.name.length >= 3 &&
-      data.name[0] === data.name[0].toUpperCase() &&
-      data.date &&
-      data.country &&
-      data.personalData &&
-      data.promo &&
-      data.url
-    ) {
-      setComponents((prevData) => [...prevData, data]);
-
-      setData({
-        title: '',
-        name: '',
-        date: '',
-        country: '',
-        url: '',
-        personalData: false,
-        promo: false,
-      });
-
-      setValidation(true);
-    }
-  };
-
-  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const target = event.target;
-    const value = target.type === 'checkbox' ? target.checked : target.value;
-    const name = target.name;
-
-    setData((prevData) => ({
-      ...prevData,
-      [name]: value,
-    }));
-  };
-
-  const selectCountryHandler = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    setData((prevData) => ({
-      ...prevData,
-      country: event.target.value,
-    }));
-  };
-
-  const fileHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
-    if (event.target.files) {
-      const file = event.target.files[0];
-      if (file) {
-        setData((prevData) => ({
-          ...prevData,
-          url: URL.createObjectURL(file),
-        }));
-      }
-    }
-  };
 
   const elements = components.map((item: FormCard, index) => {
     return (
@@ -176,100 +69,89 @@ export const Form = function Form() {
       />
     );
   });
-
+  console.log(errors);
   return (
     <div className="form-page">
-      <form className="form" name="form-page" onSubmit={handleSubmit}>
+      <form className="form" name="form-page" onSubmit={handleSubmit(onSubmit)}>
         {validation && <p className="save-message">✅ SAVE INFORMATION</p>}
         <label>
           Title<span className="required">*</span>:
           <input
             className="form-title input-text"
-            value={data.title}
-            onChange={handleInputChange}
             type="text"
-            name="title"
+            {...register('title', {
+              required: {
+                value: true,
+                message: 'Enter the correct product name (more than 3 characters)',
+              },
+              minLength: 3,
+            })}
           />
-          {error.titleErr === true && (
-            <span className="error">
-              Enter the correct product name (capitalized, more than 3 characters)
-            </span>
-          )}
+          {errors.title && <span className="error">{errors.title.message}</span>}
         </label>
         <label>
           Name<span className="required">*</span>:
           <input
             className="form-name input-text"
-            value={data.name}
-            onChange={handleInputChange}
             type="text"
-            name="name"
+            {...register('name', {
+              required: 'Enter full name (capitalized, more than 3 characters)',
+              minLength: 3,
+            })}
           />
-          {error.nameErr && (
-            <span className="error">Enter full name (capitalized, more than 3 characters)</span>
-          )}
+          {errors.name && <span className="error">{errors.name.message}</span>}
         </label>
         <label>
           Date of delivery<span className="required">*</span>:
           <input
             className="form-date"
-            value={data.date}
-            onChange={handleInputChange}
             type="date"
-            name="date"
             min={`${createDate()}`}
+            {...register('date', { required: 'Enter a future date' })}
           />
-          {error.dateErr && <span className="error">Enter a future date</span>}
+          {errors.date && <span className="error">{errors.date.message}</span>}
         </label>
         <label>
           Country<span className="required">*</span>:
-          <select
-            value={data.country}
-            onChange={selectCountryHandler}
-            className="form-select"
-            name="country"
-          >
+          <select className="form-select" {...register('country', { required: 'Choose country' })}>
             <option value=""></option>
             <option value="Belarus">Belarus</option>
             <option value="Poland">Poland</option>
             <option value="Ukraine">Ukraine</option>
             <option value="Latvia">Latvia</option>
           </select>
-          {error.selectErr && <span className="error">Choose country</span>}
+          {errors.country && <span className="error">{errors.country.message}</span>}
         </label>
         <label className="form-label">
           <input
             className="form-checkbox"
-            checked={data.personalData}
-            onChange={handleInputChange}
             type="checkbox"
-            name="personalData"
+            {...register('personalData', { required: 'Сheck this box' })}
           />{' '}
           I consent to my personal data
           <span className="required">*</span>
-          {error.personalDataErr && <span className="error">Сheck this box</span>}
+          {errors.personalData && <span className="error">{errors.personalData.message}</span>}
         </label>
         <label className="form-label">
           <input
             className="switch form-switch"
-            checked={data.promo}
-            onChange={handleInputChange}
             type="checkbox"
-            name="promo"
+            {...register('promo', { required: 'Сheck this switch' })}
           />{' '}
           I want to receive notifications about promo, sales, etc.
           <span className="required">*</span>
         </label>
-        {error.promoErr && <span className="error">Сheck this switch</span>}
+        {errors.promo && <span className="error">{errors.promo.message}</span>}
         <label className="file-label">
           <span className="file-upload">Upload image</span>
           <input
             className="hidden"
             type="file"
-            onChange={fileHandler}
+            // onChange={fileHandler}
             accept="image/*,.png,.jpg,.gif,.web"
+            {...register('url', { required: 'Load image' })}
           />
-          {error.urlErr && <span className="error">Load image</span>}
+          {errors.url && <span className="error">{errors.url.message}</span>}
         </label>
         <input className="form-btn" type="submit" value="Submit" />
       </form>

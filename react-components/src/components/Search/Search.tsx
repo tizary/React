@@ -1,13 +1,34 @@
 import { ChangeEvent, FormEvent, useEffect, useState } from 'react';
 import './Search.scss';
 import img from '../../assets/search.png';
+import axiosInstance from '../../services/api';
+import apiKey from '../../services/apiKey';
+
+interface ItemApi {
+  author: string;
+  content: string;
+  description: string;
+  publishedAt: string;
+  source: { id: string; name: string };
+  title: string;
+  url: string;
+  urlToImage: string;
+}
 
 export const Search = function Search() {
   const [inputValue, setValue] = useState(localStorage.getItem('inputValue') || '');
+  const [art, setArt] = useState<ItemApi[]>([]);
 
-  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    try {
+      const response = await axiosInstance.get(`v2/everything?q=${inputValue}&apiKey=${apiKey}`);
+      setArt(response.data.articles);
+    } catch (e) {
+      console.error(e);
+    }
   };
+  console.log(art);
 
   useEffect(() => {
     localStorage.setItem('inputValue', inputValue || '');

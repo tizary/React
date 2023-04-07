@@ -3,7 +3,7 @@
   transition: .3s;
 
   &-wrapper {
-    height: 380px;
+    height: 390px;
     border-radius: 5px;
     overflow: hidden;
     cursor: pointer;
@@ -20,11 +20,18 @@
   &-title {
     margin-top: 10px;
     padding: 0 10px;
+    height: 65px;
+    overflow: hidden;
   }
 
   &-description {
     margin-top: 10px;
     padding: 0 10px 20px;
+
+    &-text {
+      height: 55px;
+      overflow: hidden;
+    }
 
     &-date {
       position: absolute;
@@ -37,6 +44,10 @@
       right: 10px;
       color: #0957A8;
       font-weight: 700;
+      text-align: right;
+      width: 130px;
+      height: 20px;
+      overflow: hidden;
     }
   }
 

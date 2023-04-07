@@ -4,18 +4,17 @@ import img from '../../assets/search.png';
 import axiosInstance from '../../services/api';
 import apiKey from '../../services/apiKey';
 
-interface ItemApi {
+export interface ItemApi {
+  onStartSearch(art: ItemApi[]): unknown;
   author: string;
-  content: string;
+  // content?: string;
   description: string;
   publishedAt: string;
-  source: { id: string; name: string };
   title: string;
-  url: string;
   urlToImage: string;
 }
 
-export const Search = function Search() {
+export const Search = function Search(props: ItemApi) {
   const [inputValue, setValue] = useState(localStorage.getItem('inputValue') || '');
   const [art, setArt] = useState<ItemApi[]>([]);
 
@@ -28,10 +27,10 @@ export const Search = function Search() {
       console.error(e);
     }
   };
-  console.log(art);
 
   useEffect(() => {
     localStorage.setItem('inputValue', inputValue || '');
+    props.onStartSearch(art);
   });
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {

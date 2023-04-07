@@ -17,7 +17,7 @@ export const Card = function Card(props: MyProps) {
         <div className="card-description">
           <p className="card-description-text">{props.description}</p>
           <span className="card-description-date">{props.date}</span>
-          <span className="card-description-price">${props.price}</span>
+          <span className="card-description-price">{props.price}</span>
         </div>
       </div>
     </div>

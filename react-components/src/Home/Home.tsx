@@ -1,10 +1,10 @@
 import './Home.scss';
-import { ItemApi, Search } from '../components/Search/Search';
-import { Card } from '../components/Card/Card';
-import { Key, useState } from 'react';
-// import cardsInfo from './cards.json';
+import { Search } from '../components/Search/Search';
+import { useState } from 'react';
+import { Sort } from '../components/Sort/Sort';
+import { CardsList } from '../components/CardsList/CardsList';
 
-interface DataApi {
+export interface DataApi {
   author: string;
   // content?: string;
   description: string;
@@ -15,31 +15,31 @@ interface DataApi {
 
 export const Home = function Home() {
   const [infoApi, setInfoApi] = useState<DataApi[]>([]);
-  const startSearchHandler = (inputSearchData: DataApi[]) => {
-    setInfoApi(inputSearchData);
+  const [sort, setSort] = useState<string>('popularity');
+  const [search, setSearch] = useState<string>('');
+
+  const startSearchHandler = (inputSearchData: string) => {
+    setSearch(inputSearchData);
   };
-  const cardElements = infoApi.map((item: DataApi, index) => (
-    <Card
-      key={index}
-      image={item.urlToImage}
-      title={item.title}
-      description={item.description}
-      date={item.publishedAt.slice(0, 10)}
-      price={item.author}
-    />
-  ));
+
+  const startSortHandler = (sortItem: string) => {
+    setSort(sortItem);
+  };
+
+  const getArr = (arr: DataApi[]) => {
+    setInfoApi(arr);
+  };
+  console.log(sort);
+  console.log(search);
+
   return (
     <div className="page-wrapper">
       <h2 className="page-title">Home</h2>
-      <Search
-        onStartSearch={startSearchHandler}
-        author={''}
-        description={''}
-        publishedAt={''}
-        title={''}
-        urlToImage={''}
-      />
-      <div className="cards-list">{cardElements}</div>
+      <Search onGetSearchInfo={startSearchHandler} sort={sort} onGetSearchArr={getArr} />
+      {infoApi.length > 0 && (
+        <Sort onGetSortInfo={startSortHandler} search={search} onGetSortArr={getArr} />
+      )}
+      <CardsList addInfoApi={infoApi} />
     </div>
   );
 };

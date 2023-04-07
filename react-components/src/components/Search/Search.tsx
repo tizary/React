@@ -1,36 +1,29 @@
 import { ChangeEvent, FormEvent, useEffect, useState } from 'react';
 import './Search.scss';
 import img from '../../assets/search.png';
-import axiosInstance from '../../services/api';
-import apiKey from '../../services/apiKey';
+import { DataApi } from '../../Home/Home';
+import { getRequest } from '../../services/getRequest';
 
-export interface ItemApi {
-  onStartSearch(art: ItemApi[]): unknown;
-  author: string;
-  // content?: string;
-  description: string;
-  publishedAt: string;
-  title: string;
-  urlToImage: string;
-}
-
-export const Search = function Search(props: ItemApi) {
+export const Search = function Search(props: {
+  onGetSearchArr(arr: DataApi[]): unknown;
+  sort: string;
+  onGetSearchInfo: (arg0: string) => void;
+}) {
   const [inputValue, setValue] = useState(localStorage.getItem('inputValue') || '');
-  const [art, setArt] = useState<ItemApi[]>([]);
 
-  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
+  const dataArr = async (inputValue: string, sort: string) => {
+    const arr = await getRequest(inputValue, sort);
+    props.onGetSearchArr(arr);
+  };
+
+  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    try {
-      const response = await axiosInstance.get(`v2/everything?q=${inputValue}&apiKey=${apiKey}`);
-      setArt(response.data.articles);
-    } catch (e) {
-      console.error(e);
-    }
+    props.onGetSearchInfo(inputValue);
+    dataArr(inputValue, props.sort);
   };
 
   useEffect(() => {
     localStorage.setItem('inputValue', inputValue || '');
-    props.onStartSearch(art);
   });
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {

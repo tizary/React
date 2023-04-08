@@ -1,12 +1,13 @@
 import './Home.scss';
 import { Search } from '../components/Search/Search';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Sort } from '../components/Sort/Sort';
 import { CardsList } from '../components/CardsList/CardsList';
+import CardSkeleton from '../components/CardSkeleton/CardSkeleton';
 
 export interface DataApi {
   author: string;
-  // content?: string;
+  content: string;
   description: string;
   publishedAt: string;
   title: string;
@@ -17,6 +18,16 @@ export const Home = function Home() {
   const [infoApi, setInfoApi] = useState<DataApi[]>([]);
   const [sort, setSort] = useState<string>('popularity');
   const [search, setSearch] = useState<string>('');
+  const [loading, setLoading] = useState<boolean>(true);
+
+  useEffect(() => {
+    const timeout = setTimeout(() => {
+      setLoading(true);
+    }, 2000);
+    return () => {
+      clearTimeout(timeout);
+    };
+  });
 
   const startSearchHandler = (inputSearchData: string) => {
     setSearch(inputSearchData);
@@ -28,9 +39,8 @@ export const Home = function Home() {
 
   const getArr = (arr: DataApi[]) => {
     setInfoApi(arr);
+    setLoading(false);
   };
-  console.log(sort);
-  console.log(search);
 
   return (
     <div className="page-wrapper">
@@ -39,7 +49,8 @@ export const Home = function Home() {
       {infoApi.length > 0 && (
         <Sort onGetSortInfo={startSortHandler} search={search} onGetSortArr={getArr} />
       )}
-      <CardsList addInfoApi={infoApi} />
+      {!loading && <CardSkeleton />}
+      {loading && <CardsList addInfoApi={infoApi} />}
     </div>
   );
 };

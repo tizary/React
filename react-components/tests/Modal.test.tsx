@@ -8,7 +8,7 @@ describe('<Modal />', () => {
     const wrapper = render(
       <Modal
         active={false}
-        setActive={function (arg0: boolean): void {
+        setActive={function (): void {
           throw new Error('Function not implemented.');
         }}
         image={''}

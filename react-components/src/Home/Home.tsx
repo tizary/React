@@ -1,6 +1,6 @@
 import './Home.scss';
 import { Search } from '../components/Search/Search';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { Sort } from '../components/Sort/Sort';
 import { CardsList } from '../components/CardsList/CardsList';
 import CardSkeleton from '../components/CardSkeleton/CardSkeleton';

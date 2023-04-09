@@ -7,7 +7,7 @@ describe('<Card />', () => {
   test('Card mounts properly', () => {
     const wrapper = render(
       <Card
-        onHandlerCard={function (arg0: number): unknown {
+        onHandlerCard={function (): unknown {
           throw new Error('Function not implemented.');
         }}
         id={0}

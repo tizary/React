@@ -20,17 +20,9 @@ export const Home = function Home() {
   const [search, setSearch] = useState<string>('');
   const [loading, setLoading] = useState<boolean>(true);
 
-  useEffect(() => {
-    const timeout = setTimeout(() => {
-      setLoading(true);
-    }, 2000);
-    return () => {
-      clearTimeout(timeout);
-    };
-  });
-
   const startSearchHandler = (inputSearchData: string) => {
     setSearch(inputSearchData);
+    setLoading(false);
   };
 
   const startSortHandler = (sortItem: string) => {
@@ -39,14 +31,14 @@ export const Home = function Home() {
 
   const getArr = (arr: DataApi[]) => {
     setInfoApi(arr);
-    setLoading(false);
+    setLoading(true);
   };
 
   return (
     <div className="page-wrapper">
       <h2 className="page-title">Home</h2>
       <Search onGetSearchInfo={startSearchHandler} sort={sort} onGetSearchArr={getArr} />
-      {infoApi.length > 0 && (
+      {infoApi && infoApi.length > 0 && (
         <Sort onGetSortInfo={startSortHandler} search={search} onGetSortArr={getArr} />
       )}
       {!loading && <CardSkeleton />}

@@ -18,8 +18,10 @@ export const Search = function Search(props: {
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    props.onGetSearchInfo(inputValue);
-    dataArr(inputValue, props.sort);
+    if (inputValue) {
+      props.onGetSearchInfo(inputValue);
+      dataArr(inputValue, props.sort);
+    }
   };
 
   useEffect(() => {

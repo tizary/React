@@ -30,7 +30,7 @@ export const CardsList = function CardsList(props: { addInfoApi: DataApi[] }) {
   return (
     <div className="cards-list">
       {cardElements}
-      {modalId && (
+      {modalId !== null && (
         <Modal
           active={modalActive}
           setActive={setModalActive}

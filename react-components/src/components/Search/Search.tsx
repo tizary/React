@@ -1,43 +1,28 @@
-import { ChangeEvent, FormEvent, useEffect, useState } from 'react';
+import { FormEvent } from 'react';
 import './Search.scss';
 import img from '../../assets/search.png';
-import { DataApi } from '../../Home/Home';
-import { getRequest } from '../../services/getRequest';
+import { handleChange, handleSubmit } from '../../store/appSlice';
+import { useDispatch, useSelector } from 'react-redux';
+import { RootState } from '../../store/store';
 
-export const Search = function Search(props: {
-  onGetSearchArr(arr: DataApi[]): unknown;
-  sort: string;
-  onGetSearchInfo: (arg0: string) => void;
-}) {
-  const [inputValue, setValue] = useState(localStorage.getItem('inputValue') || '');
+export const Search = function Search() {
+  const saveValue = useSelector((state: RootState) => state.rootReducer.saveValue);
 
-  const dataArr = async (inputValue: string, sort: string) => {
-    const arr = await getRequest(inputValue, sort);
-    props.onGetSearchArr(arr);
-  };
+  const dispatch = useDispatch();
 
-  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+  const searchSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (inputValue) {
-      props.onGetSearchInfo(inputValue);
-      dataArr(inputValue, props.sort);
+    if (saveValue) {
+      dispatch(handleSubmit(saveValue));
     }
   };
 
-  useEffect(() => {
-    localStorage.setItem('inputValue', inputValue || '');
-  });
-
-  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setValue(e.target.value);
-  };
-
   return (
-    <form action="#" name="form" className="search" onSubmit={handleSubmit}>
+    <form action="#" name="form" className="search" onSubmit={searchSubmit}>
       <input
         type="text"
-        value={inputValue}
-        onChange={handleChange}
+        value={saveValue || ''}
+        onChange={(event) => dispatch(handleChange(event.target.value))}
         name="search"
         className="search-input"
         placeholder="Search"

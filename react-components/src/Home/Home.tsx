@@ -1,9 +1,14 @@
 import './Home.scss';
 import { Search } from '../components/Search/Search';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Sort } from '../components/Sort/Sort';
 import { CardsList } from '../components/CardsList/CardsList';
 import CardSkeleton from '../components/CardSkeleton/CardSkeleton';
+import apiKey from '../services/apiKey';
+import { useDispatch, useSelector } from 'react-redux';
+import { RootState } from '../store/store';
+import { saveInfoApi } from '../store/appSlice';
+import axiosInstance from '../services/api';
 
 export interface DataApi {
   author: string;
@@ -15,34 +20,39 @@ export interface DataApi {
 }
 
 export const Home = function Home() {
-  const [infoApi, setInfoApi] = useState<DataApi[]>([]);
-  const [sort, setSort] = useState<string>('popularity');
-  const [search, setSearch] = useState<string>('');
   const [loading, setLoading] = useState<boolean>(true);
 
-  const startSearchHandler = (inputSearchData: string) => {
-    setSearch(inputSearchData);
-    setLoading(false);
-  };
+  const searchValue = useSelector((state: RootState) => state.rootReducer.searchValue);
+  const searchArr = useSelector((state: RootState) => state.rootReducer.searchArr);
+  const sortValue = useSelector((state: RootState) => state.rootReducer.sortValue);
 
-  const startSortHandler = (sortItem: string) => {
-    setSort(sortItem);
-  };
+  const dispatch = useDispatch();
 
-  const getArr = (arr: DataApi[]) => {
-    setInfoApi(arr);
-    setLoading(true);
-  };
+  useEffect(() => {
+    const getRequest = async () => {
+      try {
+        setLoading(false);
+
+        const response = await axiosInstance.get(
+          `v2/everything?q=${searchValue || 'news'}&sortBy=${sortValue}&apiKey=${apiKey}`
+        );
+        dispatch(saveInfoApi(response.data.articles));
+      } catch (e) {
+        console.error(e);
+      } finally {
+        setLoading(true);
+      }
+    };
+    getRequest();
+  }, [dispatch, searchValue, sortValue]);
 
   return (
     <div className="page-wrapper">
       <h2 className="page-title">Home</h2>
-      <Search onGetSearchInfo={startSearchHandler} sort={sort} onGetSearchArr={getArr} />
-      {infoApi && infoApi.length > 0 && (
-        <Sort onGetSortInfo={startSortHandler} search={search} onGetSortArr={getArr} />
-      )}
+      <Search />
+      {searchArr && searchArr.length > 0 && <Sort />}
       {!loading && <CardSkeleton />}
-      {loading && <CardsList addInfoApi={infoApi} />}
+      {loading && <CardsList addInfoApi={searchArr} />}
     </div>
   );
 };

@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../store/store';
 
 export const Search = function Search() {
-  const saveValue = useSelector((state: RootState) => state.rootReducer.saveValue);
+  const saveValue = useSelector((state: RootState) => state.appReducer.saveValue);
 
   const dispatch = useDispatch();
 
@@ -25,7 +25,7 @@ export const Search = function Search() {
         onChange={(event) => dispatch(handleChange(event.target.value))}
         name="search"
         className="search-input"
-        placeholder="Search"
+        placeholder="Enter any word to search news"
       />
       <img className="search-ico" src={img} alt="ico" />
       <button type="submit" className="search-btn">

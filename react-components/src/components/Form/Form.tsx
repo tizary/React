@@ -18,8 +18,8 @@ export interface FormCard {
 }
 
 export const Form = function Form() {
-  const formData = useSelector((state: RootState) => state.rootReducer.formsArr);
-  const formValidation = useSelector((state: RootState) => state.rootReducer.formValidation);
+  const formData = useSelector((state: RootState) => state.appReducer.formsArr);
+  const formValidation = useSelector((state: RootState) => state.appReducer.formValidation);
 
   const {
     register,

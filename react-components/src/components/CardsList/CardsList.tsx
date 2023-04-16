@@ -1,7 +1,15 @@
 import { useState } from 'react';
-import { DataApi } from '../../Home/Home';
 import { Card } from '../Card/Card';
 import Modal from '../Modal/Modal';
+
+interface DataApi {
+  author: string;
+  content: string;
+  description: string;
+  publishedAt: string;
+  title: string;
+  urlToImage: string;
+}
 
 export const CardsList = function CardsList(props: { addInfoApi: DataApi[] }) {
   const [modalActive, setModalActive] = useState(false);

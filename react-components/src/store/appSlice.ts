@@ -5,7 +5,7 @@ const appSlice = createSlice({
   name: 'appNews',
   initialState: {
     saveValue: '',
-    searchValue: '',
+    searchValue: 'all',
     sortValue: 'popularity',
     searchArr: [],
     formsArr: [] as FormCard[],

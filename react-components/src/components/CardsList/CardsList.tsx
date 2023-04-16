@@ -12,7 +12,6 @@ export const CardsList = function CardsList(props: { addInfoApi: DataApi[] }) {
   const cardHandler = (id: number) => {
     setModalActive(true);
     setModalId(id);
-    console.log(id);
   };
 
   const cardElements = arr.map((item: DataApi, index) => (

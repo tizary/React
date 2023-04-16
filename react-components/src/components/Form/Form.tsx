@@ -1,8 +1,11 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { CardInForm } from '../CardInForm/CardInForm';
-import './Form.scss';
 import { createDate } from '../../utils/createDate';
+import { useDispatch, useSelector } from 'react-redux';
+import { changeValidation, submitForm } from '../../store/appSlice';
+import { RootState } from '../../store/store';
+import './Form.scss';
 
 export interface FormCard {
   title: string;
@@ -15,6 +18,9 @@ export interface FormCard {
 }
 
 export const Form = function Form() {
+  const formData = useSelector((state: RootState) => state.rootReducer.formsArr);
+  const formValidation = useSelector((state: RootState) => state.rootReducer.formValidation);
+
   const {
     register,
     handleSubmit,
@@ -22,40 +28,36 @@ export const Form = function Form() {
     reset,
   } = useForm<FormCard>();
 
-  const [components, setComponents] = useState<FormCard[]>([]);
-
-  const [validation, setValidation] = useState(false);
+  const dispatch = useDispatch();
 
   const onSubmit = (value: FormCard) => {
     const file = value.url[0];
     const blob = new Blob([file], { type: 'img/png' });
+    const cardItem = {
+      title: value.title,
+      name: value.name,
+      date: value.date,
+      country: value.country,
+      url: URL.createObjectURL(blob),
+      personalData: value.personalData,
+      promo: value.promo,
+    };
+    dispatch(submitForm(cardItem));
+    dispatch(changeValidation(true));
 
-    setComponents((prevData) => [
-      ...prevData,
-      {
-        title: value.title,
-        name: value.name,
-        date: value.date,
-        country: value.country,
-        url: URL.createObjectURL(blob),
-        personalData: value.personalData,
-        promo: value.promo,
-      },
-    ]);
-    setValidation(true);
     reset();
   };
 
   useEffect(() => {
     const timeout = setTimeout(() => {
-      setValidation(false);
+      dispatch(changeValidation(false));
     }, 2000);
     return () => {
       clearTimeout(timeout);
     };
   });
 
-  const elements = components.map((item: FormCard, index) => {
+  const elements = formData.map((item: FormCard, index) => {
     return (
       <CardInForm
         key={index}
@@ -69,10 +71,11 @@ export const Form = function Form() {
       />
     );
   });
+
   return (
     <div className="form-page">
       <form className="form" name="form-page" onSubmit={handleSubmit(onSubmit)}>
-        {validation && <p className="save-message">✅ SAVE INFORMATION</p>}
+        {formValidation && <p className="save-message">✅ SAVE INFORMATION</p>}
         <label>
           Title<span className="required">*</span>:
           <input

@@ -1,4 +1,5 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { PayloadAction, createSlice } from '@reduxjs/toolkit';
+import { FormCard } from '../components/Form/Form';
 
 const appSlice = createSlice({
   name: 'appNews',
@@ -6,8 +7,9 @@ const appSlice = createSlice({
     saveValue: '',
     searchValue: '',
     sortValue: 'popularity',
-    forms: [],
     searchArr: [],
+    formsArr: [] as FormCard[],
+    formValidation: false,
   },
   reducers: {
     handleChange(state, action) {
@@ -18,15 +20,20 @@ const appSlice = createSlice({
     },
     saveInfoApi(state, action) {
       state.searchArr = action.payload;
-      console.log(state.searchArr);
     },
     handleSort(state, action) {
       state.sortValue = action.payload;
-      console.log(state.sortValue);
+    },
+    submitForm(state, action: PayloadAction<FormCard>) {
+      state.formsArr.push(action.payload);
+    },
+    changeValidation(state, action: PayloadAction<boolean>) {
+      state.formValidation = action.payload;
     },
   },
 });
 
-export const { handleChange, handleSubmit, saveInfoApi, handleSort } = appSlice.actions;
+export const { handleChange, handleSubmit, saveInfoApi, handleSort, submitForm, changeValidation } =
+  appSlice.actions;
 
 export default appSlice.reducer;

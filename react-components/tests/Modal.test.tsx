@@ -4,7 +4,7 @@ import Modal from '../src/components/Modal/Modal';
 import React from 'react';
 
 describe('<Modal />', () => {
-  test('App mounts properly', () => {
+  test('Modal', () => {
     const wrapper = render(
       <Modal
         active={false}

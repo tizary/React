@@ -1,6 +1,6 @@
 import { describe, test, expect } from 'vitest';
-import { render } from '@testing-library/react';
 import { App } from '../src/App';
+import { render } from '@testing-library/react';
 
 describe('<App />', () => {
   test('App mounts properly', () => {

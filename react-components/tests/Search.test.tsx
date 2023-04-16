@@ -5,45 +5,15 @@ import { Search } from '../src/components/Search/Search';
 
 describe('<Search />', () => {
   test('Form', () => {
-    render(
-      <Search
-        onGetSearchArr={function (): unknown {
-          throw new Error('Function not implemented.');
-        }}
-        sort={''}
-        onGetSearchInfo={function (): void {
-          throw new Error('Function not implemented.');
-        }}
-      />
-    );
+    render(<Search />);
     expect(screen.getByRole('form')).toBeInTheDocument();
   });
   test('Placeholder', () => {
-    render(
-      <Search
-        onGetSearchArr={function (): unknown {
-          throw new Error('Function not implemented.');
-        }}
-        sort={''}
-        onGetSearchInfo={function (): void {
-          throw new Error('Function not implemented.');
-        }}
-      />
-    );
+    render(<Search />);
     expect(screen.getByPlaceholderText(/search/i)).toBeInTheDocument();
   });
   test('Button search', () => {
-    render(
-      <Search
-        onGetSearchArr={function (): unknown {
-          throw new Error('Function not implemented.');
-        }}
-        sort={''}
-        onGetSearchInfo={function (): void {
-          throw new Error('Function not implemented.');
-        }}
-      />
-    );
+    render(<Search />);
     expect(screen.getByRole('button')).toBeInTheDocument();
   });
 });

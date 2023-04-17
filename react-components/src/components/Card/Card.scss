@@ -1,0 +1,67 @@
+.card {
+  margin-top: 30px;
+  transition: .3s;
+
+  &-wrapper {
+    height: 390px;
+    border-radius: 5px;
+    overflow: hidden;
+    cursor: pointer;
+    background-color: #fff;
+    position: relative;
+  }
+
+  &-img {
+    height: 200px;
+    object-fit: cover;
+  }
+
+  &-title {
+    margin-top: 10px;
+    padding: 0 10px;
+    height: 65px;
+    overflow: hidden;
+  }
+
+  &-description {
+    margin-top: 10px;
+    padding: 0 10px 20px;
+
+    &-text {
+      height: 55px;
+      overflow: hidden;
+    }
+
+    &-date {
+      position: absolute;
+      bottom: 20px;
+    }
+
+    &-price {
+      position: absolute;
+      bottom: 20px;
+      right: 10px;
+      color: #0957A8;
+      font-weight: 700;
+      text-align: right;
+      width: 130px;
+      height: 20px;
+      overflow: hidden;
+    }
+  }
+
+  &:hover {
+    transform: scale(1.02);
+  }
+}
+
+.popup {
+  width: 100vw;
+  height: 100vh;
+  position: fixed;
+  top: 0;
+  left: 0;
+  background-color: #000;
+  opacity: .7;
+  z-index: 100;
+}
